@@ -1,0 +1,47 @@
+@import '~materialize-css/dist/css/materialize.min.css';
+
+.App {
+  margin: 10px;
+}
+
+/* Блок авторизации/регистрации */
+input.green-input {
+  border-bottom: 1px solid #9e9e9e !important;
+}
+
+input.green-input + label {
+  color: #9e9e9e !important;
+}
+
+input.green-input:focus + label {
+  color: #4caf50 !important;
+}
+
+input.green-input:focus {
+  border-bottom: 1px solid #4caf50 !important;
+}
+
+/* Таблица */
+.table {
+  border-collapse: collapse;
+  border-radius: 3px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  color: #212121;
+  background: #f9f9f9;
+}
+
+.four {
+  background: #d3d3d3bb;
+}
+
+th {
+  padding: 0.4rem;
+  color: gray;
+  font-weight: 400;
+}
+td {
+  padding: 0.9rem;
+  border-bottom: 1px solid lightgray;
+}
+/*  */
