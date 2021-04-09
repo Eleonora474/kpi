@@ -4,7 +4,7 @@ const Table = require('../models/table')
 const auth = require('../middleware/auth.middleware')
 const router = Router()
 // /api/table/generate
-router.post('/generate', auth, async (req, res) => {
+router.post('/create', auth, async (req, res) => {
   try {
     const {
       serialNumber,
@@ -15,10 +15,10 @@ router.post('/generate', auth, async (req, res) => {
       recalculation,
     } = req.body
 
-    const existing = await Table.findOne({ from })
+    const existing = await Table.findOne({ serialNumber })
 
-    if (e) {
-      return res.json({ table: existing })
+    if (existing) {
+      return res.status(401).json({message: 'Серийный номер занят'})
     }
 
     const table = new Table({
@@ -27,14 +27,15 @@ router.post('/generate', auth, async (req, res) => {
       division,
       coefficient,
       currentValue,
-      recalculation,s
-      owner: req.employees.employeesId,
+      recalculation,
+      owner: req.employeId,
     })
 
     await table.save()
 
-    res.status(201).json({ table })
+    res.status(201).json(table )
   } catch (e) {
+    console.log(e)
     res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
   }
 })
@@ -43,6 +44,7 @@ router.get('/', auth, async (req, res) => {
     const tables = await Table.find()
     res.json(tables)
   } catch (e) {
+
     res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
   }
 })

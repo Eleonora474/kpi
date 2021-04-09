@@ -2,7 +2,6 @@ const express = require('express')
 const config = require('config')
 const mongoose = require('mongoose')
 const cors = require('cors')
-
 const app = express()
 
 app.use(cors())
@@ -21,6 +20,7 @@ async function start() {
       useUnifiedTopology: true,
       useCreateIndex: true,
     })
+
     app.listen(PORT, () =>
       console.log(`App has been started on port ${PORT}...`)
     )

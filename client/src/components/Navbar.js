@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 
@@ -11,31 +11,34 @@ export const Navbar = () => {
     auth.logout()
     history.push('/')
   }
+
   return (
-    <nav>
-      <div
-        className="nav-wrapper green white-text"
-        style={{ padding: '0 1rem' }}
-      >
-        <span className="brand-logo left">
-          Ключевые показатели эффективности
-        </span>
-        <ul className="right">
-          {auth.isAdmin && (
-            <li>
-              <NavLink to="/register">Создать пользователя</NavLink>
+    <>
+      <nav className="nav-wrapper green white-text" style={{ height: '100%' }}>
+        <div>
+          <h1 style={{ margin: 0, fontSize: '2em', textAlign: 'center' }}>
+            Ключевые показатели эффективности
+          </h1>
+        </div>
+
+        <div>
+          <ul style={{ display: 'flex', justifyContent: 'center' }}>
+            {auth.isAdmin && (
+              <li>
+                <NavLink to="/register">Создать пользователя</NavLink>
+              </li>
+            )}
+            <li className="active">
+              <NavLink to="/create">Главная</NavLink>
             </li>
-          )}
-          <li className="active">
-            <NavLink to="/create">Главная</NavLink>
-          </li>
-          <li>
-            <a href="/" onClick={logoutHandler}>
-              Выйти
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+            <li>
+              <a href="/" onClick={logoutHandler}>
+                Выйти
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </>
   )
 }

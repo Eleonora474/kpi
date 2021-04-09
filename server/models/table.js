@@ -10,4 +10,5 @@ const schema = new Schema({
   owner: { type: Types.ObjectId, ref: 'Employees' },
 })
 
+
 module.exports = model('Table', schema)

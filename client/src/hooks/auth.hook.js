@@ -14,6 +14,10 @@ export const useAuth = () => {
       storageName,
       JSON.stringify({ token: jwtToken, isAdmin: _isAdmin })
     )
+    localStorage.setItem(
+      'token',
+      JSON.stringify(jwtToken)
+    )
   }, [])
 
   const logout = useCallback(() => {

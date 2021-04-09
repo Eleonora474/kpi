@@ -1,5 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useHttp } from '../hooks/http.hook'
 
+const intitalFormData = {
+  serialNumber: '',
+  operation: '',
+  division: '',
+  coefficient: '',
+  currentValue: '',
+  recalculation: '',
+}
 const today =
   new Date().getFullYear() +
   '-' +
@@ -10,6 +19,19 @@ export const CreatePage = () => {
   const [date, setDate] = useState(today)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { loading, request, error, clearError } = useHttp()
+  const [tableData, setTableData] = useState([])
+  const [form, setForm] = useState(intitalFormData)
+  const {
+    serialNumber,
+    operation,
+    division,
+    coefficient,
+    currentValue,
+    recalculation,
+  } = form
+  function onInputChange(e) {
+    setForm((prevForm) => ({ ...prevForm, [e.target.name]: e.target.value }))
+  }
   function openModal() {
     setIsModalOpen(true)
   }
@@ -18,11 +40,23 @@ export const CreatePage = () => {
     setIsModalOpen(false)
   }
 
+  async function onCreate() {
+    const res = await request('/api/table/create', 'POST', form, {
+      auth: localStorage.getItem('token'),
+    })
+    setTableData((prev) => [...prev, res])
+    setForm(intitalFormData)
+    closeModal()
+  }
+
   useEffect(() => {
     async function getTableData() {
-      const res = request('/api/table/', 'GET'),
-        {}
+      const res = await request('/api/table/', 'GET', null, {
+        auth: localStorage.getItem('token'),
+      })
+      setTableData(res)
     }
+    getTableData()
   }, [])
 
   return (
@@ -35,38 +69,42 @@ export const CreatePage = () => {
             onChange={(e) => setDate(e.target.value)}
             value={date}
           />
-          <select>
-            <option>За День</option>
-            <option>За Неделю</option>
-            <option>За Месяц</option>
-          </select>
-          <br />
         </div>
         <button className="submit btn" onClick={openModal}>
           <strong>Добавить</strong>
         </button>
       </div>
       <div className="content">
+        {loading && <h5>Загрузка, пожалуйста подождите..</h5>}
         <table className="table" align="center">
-          <tr>
-            <th>№</th>
-            <th colspan="2">Основные продукты</th>
-            <th>Коэффицент перерасчета</th>
-            <th>Текущее значение</th>
-            <th>Перерасчет</th>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td className="four"></td>
-            <td></td>
-          </tr>
+          <thead>
+            <tr>
+              <th colspan="2">Операция</th>
+              <th>Коэффицент</th>
+              <th align="center">Текущее значение</th>
+              <th>Результат</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tableData.map((d) => (
+              <tr key={d._id}>
+                <td>{d.operation}</td>
+                <td>{d.division}</td>
+                <td>{d.coefficient}</td>
+                <td>{d.currentValue}</td>
+                <td>{d.recalculation}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
 
       {isModalOpen && (
-        <div className="modal" onClick={closeModal}>
+        <div
+          className="modal"
+          onClick={closeModal}
+          style={{ display: isModalOpen ? 'block' : 'none' }}
+        >
           <div
             className="modal-content"
             onClick={(e) => {
@@ -78,13 +116,46 @@ export const CreatePage = () => {
             </div>
             <div className="modal-body">
               <input
-                className="input"
+                className="green-input"
                 type="text"
-                // onChange={(e) => setNewOperationName(e.target.value)}
-                // value={newOperationName}
+                value={operation}
+                name="operation"
+                placeholder="Наименование операции"
+                onChange={onInputChange}
               />
-              <button className="btn create">
-                {/* onClick={saveOperation} */}
+              <input
+                className="green-input"
+                type="text"
+                value={division}
+                name="division"
+                placeholder="Подразделение операции"
+                onChange={onInputChange}
+              />
+              <input
+                className="green-input"
+                type="text"
+                value={coefficient}
+                name="coefficient"
+                placeholder="Коэффицент"
+                onChange={onInputChange}
+              />
+              <input
+                className="green-input"
+                type="text"
+                value={currentValue}
+                name="currentValue"
+                placeholder="Текущее значение"
+                onChange={onInputChange}
+              />
+              <input
+                className="green-input"
+                type="text"
+                value={recalculation}
+                name="recalculation"
+                placeholder="Результат"
+                onChange={onInputChange}
+              />
+              <button className="btn create" onClick={onCreate}>
                 Создать
               </button>
               <button className="btn cancel" onClick={closeModal}>
