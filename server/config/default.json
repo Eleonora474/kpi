@@ -1,6 +1,0 @@
-{
-  "port": 5000,
-  "jwtSecret": "emmerich",
-  "employees": "mongodb://127.0.0.1:27017/kpi",
-  "baseUrl": "http://localhost:5000"
-}
