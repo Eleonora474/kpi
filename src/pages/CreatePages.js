@@ -57,7 +57,7 @@ export const CreatePage = () => {
       setTableData(res)
     }
     getTableData()
-  }, [])
+  }, [request])
 
   return (
     <div className="wrapper">
