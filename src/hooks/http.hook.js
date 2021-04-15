@@ -13,7 +13,7 @@ export const useHttp = () => {
           headers['Content-Type'] = 'application/json'
         }
 
-        const response = await fetch('http://localhost:5000' + url, {
+        const response = await fetch('https://kpi-sber.herokuapp.com/' + url, {
           method,
           body,
           headers,
