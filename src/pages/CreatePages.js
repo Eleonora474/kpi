@@ -18,7 +18,7 @@ const today =
 export const CreatePage = () => {
   const [date, setDate] = useState(today)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { loading, request, error, clearError } = useHttp()
+  const { loading, request } = useHttp()
   const [tableData, setTableData] = useState([])
   const [form, setForm] = useState(intitalFormData)
   const {
@@ -115,6 +115,14 @@ export const CreatePage = () => {
               <h3>Добавить данные</h3>
             </div>
             <div className="modal-body">
+              <input
+                className="green-input"
+                type="text"
+                value={serialNumber}
+                name="serialNumber"
+                placeholder="Серийный номер"
+                onChange={onInputChange}
+              />
               <input
                 className="green-input"
                 type="text"
