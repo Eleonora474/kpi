@@ -1,7 +1,6 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { CreatePage } from './pages/CreatePages'
-import { DetailPage } from './pages/DetailPages'
 import { LoginPage } from './pages/LoginPages'
 import { RegisterPage } from './pages/RegisterPages'
 
@@ -12,9 +11,6 @@ export const useRoutes = (isAuthenticated, isAdmin) => {
       <Switch>
         <Route path="/create" exact>
           <CreatePage />
-        </Route>
-        <Route path="/detail/:id">
-          <DetailPage />
         </Route>
         <Route path="/register" exact>
           <RegisterPage isAdmin={isAdmin} />
